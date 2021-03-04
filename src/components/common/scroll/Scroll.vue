@@ -34,29 +34,37 @@ export default {
   },
   mounted() {
     // 初始化better-scroll
-    this.initBScroll()
-    //实时监听滚动的位置
-    this.scroll.on('scroll', (position) => {
-      this.$emit('scroll', position)
+    this.scroll = new BScroll(this.$refs.betterScroll, {
+      click: true,
+      useTransition: false,
+      pullUpLoad: this.pullUpLoad,
+      probeType: this.probeType,
+      observeDom: true,
+      observeImage: true,
     })
+    //实时监听滚动的位置
+    if (this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on('scroll', (position) => {
+        this.$emit('scroll', position)
+      })
+    }
+    //上拉加载功能
+    if (this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullingUp')
+      })
+    }
   },
   methods: {
-    initBScroll() {
-      this.scroll = new BScroll(this.$refs.betterScroll, {
-        useTransition: false,
-        pullUpLoad: this.pullUpLoad,
-        observeDOM: true,
-        click: true,
-        probeType: this.probeType,
-      })
-      if (this.pullUpLoad) {
-        this.scroll.on('pullingUp', () => {
-          this.$emit('pullingUp')
-        })
-      }
+    //回到顶部
+    scrollTo(x, y, time = 300) {
+      this.scroll && this.scroll.scrollTo(x, y, time)
     },
-    scrollTo(x, y, time) {
-      this.scroll.scrollTo(x, y, time)
+    refresh() {
+      this.scroll && this.scroll.refresh()
+    },
+    finishPullUp() {
+      this.scroll && this.scroll.finishPullUp()
     },
   },
 }

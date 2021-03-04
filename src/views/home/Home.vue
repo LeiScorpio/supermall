@@ -1,6 +1,13 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control
+      :title="['流行', '新款', '精选']"
+      class="tab-control"
+      @tabClick="tabClick"
+      ref="tabControlOne"
+      v-show="isTabControlFixed"
+    ></tab-control>
     <scroll
       class="scroll-height"
       ref="scroll"
@@ -10,13 +17,16 @@
       @pullingUp="loadMore"
     >
       <!-- 轮播图 -->
-      <home-swiper :banner="banner"></home-swiper>
+      <home-swiper
+        :banner="banner"
+        @swiperImageLoad="swiperImageLoad"
+      ></home-swiper>
       <recommend-view :recommend="recommend"></recommend-view>
       <feature-view></feature-view>
       <tab-control
         :title="['流行', '新款', '精选']"
-        class="tab-control"
         @tabClick="tabClick"
+        ref="tabControlTwo"
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
@@ -52,6 +62,8 @@ export default {
       },
       currentType: 'pop',
       isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabControlFixed: false,
     }
   },
   components: {
@@ -71,10 +83,14 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+  mounted() {},
   methods: {
     /* 事件监听相关方法 */
+    //切换商品类别
     tabClick(index) {
       this.currentType = Object.keys(this.goods)[index]
+      this.$refs.tabControlOne.currentIndex = index
+      this.$refs.tabControlTwo.currentIndex = index
     },
     //点击回到顶部功能
     backClick() {
@@ -83,14 +99,21 @@ export default {
     //控制回到顶部显示或者隐藏
     contentScroll(position) {
       this.isShowBackTop = position.y < -1000
+      //决定tabControl是否吸顶（position: fixed）
+      this.isTabControlFixed = -position.y > this.tabOffsetTop
     },
     //上拉加载功能
     loadMore() {
-      console.log('加载更多！')
       this.getHomeGoods(this.currentType)
-      this.$refs.scroll.scroll.finishPullUp()
-      //图片加载完毕后重新计算高度
-      this.$refs.scroll.scroll.refresh()
+      //完成上拉动作
+      this.$refs.scroll.scroll && this.$refs.scroll.finishPullUp()
+      //重新计算滚动距离
+      this.$refs.scroll.scroll && this.$refs.scroll.refresh()
+    },
+    //监听轮播图图片加载完毕
+    swiperImageLoad() {
+      //先拿到组件，再拿到元素，然后获取offset
+      this.tabOffsetTop = this.$refs.tabControlTwo.$el.offsetTop
     },
 
     /* 网络请求相关代码 */
@@ -107,12 +130,11 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
-        //图片加载完毕后重新计算高度
-        this.$refs.scroll.scroll.refresh()
       })
     },
   },
   computed: {
+    //通过currenttype来确定传入goodslist中的数据种类
     showGoods() {
       return this.goods[this.currentType].list
     },
@@ -120,36 +142,34 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #home {
-  padding-top: 44px;
   height: 100vh;
   position: relative;
 }
 .home-nav {
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
   background-color: var(--color-tint);
   color: #fff;
 }
-.tab-control {
-  position: sticky;
-  top: 44px;
-  z-index: 9;
-}
+
 .scroll-height {
   position: absolute;
-  top: 44px;
+  top: 45px;
   bottom: 49px;
   left: 0;
   right: 0;
+  overflow: hidden;
 }
-.before-trigger {
-  width: 100%;
-  height: 50px;
-  background-clip: red;
+
+.tab-control {
+  position: relative;
+  left: 0;
+  right: 0;
+  z-index: 9;
 }
 </style>
