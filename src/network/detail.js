@@ -9,6 +9,12 @@ export function getDetail(iid) {
   })
 }
 
+export function getRecommend() {
+  return request({
+    url: '/recommend'
+  })
+}
+
 //创建一个商品详情页信息的类
 export class Goods {
   constructor(itemInfo, columns, services) {
@@ -20,5 +26,16 @@ export class Goods {
     this.columns = columns
     this.services = services
     this.realPrice = itemInfo.lowNowPrice
+  }
+}
+//创建一个店铺信息的类
+export class Shop {
+  constructor(shopInfo) {
+    this.logo = shopInfo.shopLogo
+    this.name = shopInfo.name
+    this.fans = shopInfo.cFans
+    this.sells = shopInfo.cSells
+    this.score = shopInfo.score
+    this.goodsCount = shopInfo.cGoods
   }
 }

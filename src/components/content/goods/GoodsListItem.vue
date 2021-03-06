@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" />
+    <img :src="showImage" alt="" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -22,8 +22,23 @@ export default {
   },
   methods: {
     itemClick() {
-      //跳转到详情页
-      this.$router.push('/detail/' + this.goodsItem.iid)
+      //跳转到详情页,通过动态参数匹配的方式传递iid
+      // this.$router.push('/detail/' + this.goodsItem.iid)
+      //通过查询字符串的方式传递iid
+      this.$router.push({
+        path: '/detail',
+        query: {
+          iid: this.getId,
+        },
+      })
+    },
+  },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img
+    },
+    getId() {
+      return this.goodsItem.iid || this.goodsItem.shop_id
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" ref="betterScroll">
-    <div class="content">
+    <div id="content">
       <slot></slot>
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
       useTransition: false,
       pullUpLoad: this.pullUpLoad,
       probeType: this.probeType,
-      observeDom: true,
+      observeDOM: true,
       observeImage: true,
     })
     //实时监听滚动的位置
