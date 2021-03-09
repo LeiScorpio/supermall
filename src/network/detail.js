@@ -1,5 +1,6 @@
 import { request } from './request'
 
+//封装一个请求详情页数据的方法
 export function getDetail(iid) {
   return request({
     url: '/detail',
@@ -8,7 +9,7 @@ export function getDetail(iid) {
     }
   })
 }
-
+//封装一个请求推荐商品数据的方法
 export function getRecommend() {
   return request({
     url: '/recommend'

@@ -12,14 +12,6 @@
       <span>{{ goods.services[goods.services.length - 1].name }}</span>
     </div>
     <div class="info-service">
-      <!-- <span>
-        <img :src="goods.services[goods.services.length - 2].icon" alt="" />
-        <span>{{ goods.services[goods.services.length - 2].name }}</span>
-      </span>
-      <span>
-        <img :src="goods.services[goods.services.length - 1].icon" alt="" />
-        <span>{{ goods.services[goods.services.length - 1].name }}</span>
-      </span> -->
       <span v-for="index in goods.services.length - 2" :key="index">
         <img
           :src="goods.services[index].icon"
@@ -47,6 +39,9 @@ export default {
 </script>
 
 <style scoped>
+#detail-base-info {
+  padding-bottom: 10px;
+}
 .info-title {
   margin: 12px 8px;
   font-size: 20px;

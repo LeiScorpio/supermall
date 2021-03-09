@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="showImage" alt="" />
+    <img v-lazy="showImage" alt="" @load="goodsload" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -31,6 +31,9 @@ export default {
           iid: this.getId,
         },
       })
+    },
+    goodsload() {
+      this.$bus.$emit('goodsload')
     },
   },
   computed: {

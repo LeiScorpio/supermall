@@ -1,17 +1,20 @@
 <template>
   <div id="home">
+    <!-- 顶部导航栏 -->
     <nav-bar class="home-nav">
       <template v-slot:center>
         <div>购物街</div>
       </template>
     </nav-bar>
+    <!-- 类型切换栏 -->
     <tab-control
       :title="['流行', '新款', '精选']"
       class="tab-control"
       @tabClick="tabClick"
-      ref="tabControlOne "
+      ref="tabControlOne"
       v-show="isTabControlFixed"
     ></tab-control>
+    <!-- 滚动区域开始 -->
     <scroll
       class="scroll-height"
       ref="scroll"
@@ -25,15 +28,21 @@
         :banner="banner"
         @swiperImageLoad="swiperImageLoad"
       ></home-swiper>
+      <!-- 推荐图 -->
       <recommend-view :recommend="recommend"></recommend-view>
+      <!-- 本周流行 -->
       <feature-view></feature-view>
+      <!-- 类型切换栏 -->
       <tab-control
         :title="['流行', '新款', '精选']"
         @tabClick="tabClick"
         ref="tabControlTwo"
       ></tab-control>
+      <!-- 商品显示区 -->
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
+    <!-- 滚动区域结束 -->
+    <!-- 回到顶部按键 -->
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -59,6 +68,7 @@ export default {
     return {
       banner: [],
       recommend: [],
+      //商品数据
       goods: {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },

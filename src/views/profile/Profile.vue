@@ -1,12 +1,29 @@
-<template>
-  <h2>我的</h2>
+<template >
+  <div>
+    <nav-bar class="profile-nav">
+      <template v-slot:center>
+        <div>个人中心</div>
+      </template>
+    </nav-bar>
+  </div>
 </template>
-
 <script>
-export default {
-  name: "Profile"
-};
-</script>
+//导入公共组件
+import NavBar from 'components/common/navbar/NavBar'
 
-<style>
+export default {
+  name: 'Profile',
+  data() {
+    return {}
+  },
+  components: {
+    NavBar,
+  },
+}
+</script>
+<style scoped>
+.profile-nav {
+  background-color: var(--color-tint);
+  color: #fff;
+}
 </style>

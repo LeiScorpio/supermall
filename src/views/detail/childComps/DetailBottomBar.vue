@@ -15,7 +15,9 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <div class="cart" @click="addToCart">加入购物车</div>
+      <div class="cart" @click="addToCart" :class="{ active: isActive }">
+        加入购物车
+      </div>
       <div class="buy">购买</div>
     </div>
   </div>
@@ -25,11 +27,17 @@
 export default {
   name: 'DetailBottomBar',
   data() {
-    return {}
+    return {
+      isActive: false,
+    }
   },
   methods: {
     addToCart() {
       this.$emit('addCart')
+      this.isActive = true
+      setTimeout(() => {
+        this.isActive = false
+      }, 250)
     },
   },
 }
@@ -79,7 +87,16 @@ export default {
   color: #333;
   background-color: #ffe817;
 }
+.bar-right .cart:hover {
+  color: #fff;
+  background-color: #ccc;
+}
 .bar-right .buy {
   background-color: #f69;
+}
+.bar-right .active {
+  background-color: pink;
+  color: #fff;
+  box-shadow: 0px 0px 5px #888888 inset;
 }
 </style>
