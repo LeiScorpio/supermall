@@ -55,4 +55,7 @@ a {
 .right {
   float: right;
 }
+* {
+    touch-action: pan-y;
+}
 
